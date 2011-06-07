@@ -80,6 +80,26 @@ problem_init(Problem *p, const char *inst_name)
 }
 
 static void
+problem_shutdown(Problem *p)
+{
+    int *d1, *d2;
+    Eina_List *l1, *l2, *l1_next, *l2_next;
+
+    EINA_LIST_FOREACH_SAFE(p->stations, l1, l1_next, d1)
+    {
+        Station *s = (Station *)d1;
+        EINA_LIST_FOREACH_SAFE(s->points, l2, l2_next, d2)
+        {
+            s->points = eina_list_remove(s->points, l2);
+            free(d2);
+        }
+        free(s->name);
+        p->stations = eina_list_remove(p->stations, l1);
+
+    }
+}
+
+static void
 verify_problem(Problem *p)
 {
     int *d1, *d2;
@@ -118,7 +138,7 @@ int main(int argc, char *argv[])
 
     problem_init(&p, argv[1]);
 
-    verify_problem(&p);
+    problem_shutdown(&p);
 
     eina_shutdown();
 
