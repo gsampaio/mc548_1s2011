@@ -29,8 +29,7 @@ station_init(Station *s, const char *line)
             {
                 case 0:
                     {
-                        s->name = malloc(len);
-                        strcpy(s->name, buffer);
+                        s->name = strdup(buffer);
                         break;
                     }
                 case 1:
