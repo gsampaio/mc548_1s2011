@@ -1,22 +1,6 @@
-#include <Eina.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#define MAX_SIZE    4096
-typedef struct _Problem Problem;
-struct _Problem
-{
-    int n, m;
-    Eina_List *stations;
-};
-
-typedef struct _Station Station;
-struct _Station
-{
-    char *name;
-    double value;
-    Eina_List *points;
-};
+#include "save_world.h"
 
 static void
 _usage(void)
