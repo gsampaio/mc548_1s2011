@@ -12,7 +12,7 @@ _usage(void)
 static void
 station_init(Station *s, const char *line)
 {
-    int i = 0, j = 0, begin = 0, counter = 0;
+    unsigned int i = 0, begin = 0, counter = 0;
 
     s->points = NULL;
 
@@ -21,7 +21,7 @@ station_init(Station *s, const char *line)
         if (line[i] == ' ')
         {
             int len = i - begin;
-            char buffer[len + 1], buff;
+            char buffer[len + 1];
             strncpy(buffer, &line[begin], len);
             buffer[len] = '\0';
 
@@ -43,7 +43,6 @@ station_init(Station *s, const char *line)
                         int *point = malloc(sizeof(int));
                         *point = atoi(buffer);
                         s->points = eina_list_append(s->points, point);
-                        j++;
                         break;
                     }
             }
@@ -67,8 +66,6 @@ problem_init(Problem *p, const char *inst_name)
     for(i = 0; i <= p->m; i++)
     {
         char buffer[MAX_SIZE];
-        char *endline, del = '\n';
-        int len;
 
         fgets(buffer, MAX_SIZE, inst);
         if (buffer[0] != 'S')
@@ -85,9 +82,8 @@ problem_init(Problem *p, const char *inst_name)
 static void
 verify_problem(Problem *p)
 {
-    int i, *d1, *d2;
+    int *d1, *d2;
     Eina_List *n1, *n2;
-
 
     printf("N %d\n", p->n);
     printf("M %d\n", p->m);
