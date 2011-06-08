@@ -129,6 +129,21 @@ _verify_problem(Problem *p)
     }
 }
 
+static void
+_print_solution(Solution *s) {
+    /*TODO: testar*/
+    int size;
+    Eina_List * node;
+    Station *station;
+
+    size = eina_list_count(s->stations);
+    printf("Valor: %lf\n", s->value);
+    printf("Total: %d", size);
+
+    EINA_LIST_FOREACH(s->stations, node, station)
+        printf("%s\n", station->name);
+}
+
 int main(int argc, char *argv[])
 {
     unsigned char r = 0;
