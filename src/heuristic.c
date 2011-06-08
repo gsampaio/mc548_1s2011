@@ -35,6 +35,13 @@ solution_update(Solution *solution, Eina_List *points, Eina_List *stations, Stat
     solution = eina_list_append(station);
 }
 
+Eina_List *
+available_stations_init(Eina_List *stations)
+{
+    Eina_List *available_stations = eina_list_clone(stations);
+    return available_stations;
+}
+
 Station *
 station_random_get(Eina_List *stations)
 {
