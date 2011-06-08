@@ -7,3 +7,13 @@ compare_solution(Solution *s1, Solution *s2)
         return s1;
     return s2;
 }
+
+Station *
+station_random_get(Eina_List *stations)
+{
+    Station *s;
+    int r = srand(time(NULL)) % eina_list_count(stations);
+    s = eina_list_nth(stations, r);
+
+    return s;
+}
