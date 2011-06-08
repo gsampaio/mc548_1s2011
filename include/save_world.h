@@ -27,4 +27,6 @@ struct _Solution {
     Eina_List *stations;
 };
 
+Solution *compare_solution(Solution *s1, Solution *s2);
+
 #endif /* SAVE_WORLD_H__ */
