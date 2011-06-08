@@ -20,4 +20,10 @@ struct _Station
     Eina_List *points;
 };
 
+typedef struct _Solution Solution; 
+struct _Solution {
+	double value; 
+	Eina_List * stations;
+}
+
 #endif /* SAVE_WORLD_H__ */
