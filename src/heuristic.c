@@ -44,3 +44,20 @@ station_random_get(Eina_List *stations)
 
     return s;
 }
+
+Eina_List *
+available_points_init(int size)
+{
+    Eina_List *available_points = NULL;
+    int i;
+
+    for(i = 1; i <= size; i++)
+    {
+        int *d = malloc(sizeof(int));
+        *d = i;
+
+        available_points = eina_list_append(available_points, d)
+    }
+
+    return available_points;
+}
