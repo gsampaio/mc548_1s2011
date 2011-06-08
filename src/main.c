@@ -61,18 +61,18 @@ problem_init(Problem *p, const char *inst_name)
 
     fscanf(inst, "%*s %d %*s %d", &p->n, &p->m);
 
-    Station s[p->m];
     for(i = 0; i <= p->m; i++)
     {
+        Station *s = malloc(sizeof(Station));
         char buffer[MAX_SIZE];
 
         fgets(buffer, MAX_SIZE, inst);
         if (buffer[0] != 'S')
             continue;
 
-        station_init(&s[i], buffer);
+        station_init(s, buffer);
 
-        p->stations = eina_list_append(p->stations, &s[i]);
+        p->stations = eina_list_append(p->stations, s);
     }
 
     fclose(inst);
@@ -93,6 +93,7 @@ problem_shutdown(Problem *p)
             free(d2);
         }
         free(s->name);
+        free(s);
         p->stations = eina_list_remove(p->stations, l1);
 
     }
