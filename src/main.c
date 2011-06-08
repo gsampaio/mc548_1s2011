@@ -9,6 +9,15 @@ _usage(void)
            "./saveWord inst\n");
 }
 
+static int
+int_cmp(const void *a, const void *b)
+{
+    const int *ia = a;
+    const int *ib = b;
+
+    return *ia - *ib;
+}
+
 static void
 station_init(Station *s, const char *line)
 {
@@ -41,7 +50,8 @@ station_init(Station *s, const char *line)
                     {
                         int *point = malloc(sizeof(int));
                         *point = atoi(buffer);
-                        s->points = eina_list_append(s->points, point);
+                        s->points = eina_list_sorted_insert(
+                                                    s->points, int_cmp, point);
                         break;
                     }
             }
