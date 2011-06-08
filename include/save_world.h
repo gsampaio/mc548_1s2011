@@ -17,6 +17,7 @@ struct _Station
 {
     char *name;
     double value;
+    double score;
     Eina_List *points;
 };
 

@@ -49,6 +49,7 @@ station_init(Station *s, const char *line)
             counter++;
         }
     }
+    s->score = s->value/eina_list_count(s->points);
 }
 
 static void
