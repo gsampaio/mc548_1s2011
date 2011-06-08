@@ -10,7 +10,7 @@ _usage(void)
 }
 
 static int
-int_cmp(const void *a, const void *b)
+_int_cmp(const void *a, const void *b)
 {
     const int *ia = a;
     const int *ib = b;
@@ -19,7 +19,7 @@ int_cmp(const void *a, const void *b)
 }
 
 static void
-station_init(Station *s, const char *line)
+_station_init(Station *s, const char *line)
 {
     unsigned int i = 0, begin = 0, counter = 0;
 
@@ -51,7 +51,7 @@ station_init(Station *s, const char *line)
                         int *point = malloc(sizeof(int));
                         *point = atoi(buffer);
                         s->points = eina_list_sorted_insert(
-                                                    s->points, int_cmp, point);
+                                                s->points, _int_cmp, point);
                         break;
                     }
             }
@@ -63,7 +63,7 @@ station_init(Station *s, const char *line)
 }
 
 static void
-problem_init(Problem *p, const char *inst_name)
+_problem_init(Problem *p, const char *inst_name)
 {
     FILE *inst = fopen(inst_name, "r");
     int i;
@@ -81,7 +81,7 @@ problem_init(Problem *p, const char *inst_name)
         if (buffer[0] != 'S')
             continue;
 
-        station_init(s, buffer);
+        _station_init(s, buffer);
 
         p->stations = eina_list_append(p->stations, s);
     }
@@ -90,7 +90,7 @@ problem_init(Problem *p, const char *inst_name)
 }
 
 static void
-problem_shutdown(Problem *p)
+_problem_shutdown(Problem *p)
 {
     int *d1, *d2;
     Eina_List *l1, *l2, *l1_next, *l2_next;
@@ -111,7 +111,7 @@ problem_shutdown(Problem *p)
 }
 
 static void
-verify_problem(Problem *p)
+_verify_problem(Problem *p)
 {
     int *d1, *d2;
     Eina_List *n1, *n2;
@@ -147,9 +147,9 @@ int main(int argc, char *argv[])
         goto _err;
     }
 
-    problem_init(&p, argv[1]);
+    _problem_init(&p, argv[1]);
 
-    problem_shutdown(&p);
+    _problem_shutdown(&p);
 
     eina_shutdown();
 
