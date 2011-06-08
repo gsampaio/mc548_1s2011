@@ -17,8 +17,9 @@ _verify_problem(Problem *p)
     int *d1, *d2;
     Eina_List *n1, *n2;
 
-    printf("N %d\n", p->n);
-    printf("M %d\n", p->m);
+    printf("N %d\n"
+           "M %d\n",
+           p->n, p->m);
 
     EINA_LIST_FOREACH(p->stations, n1, d1)
     {
@@ -38,8 +39,9 @@ _print_solution(Solution *s) {
     Station *station;
 
     size = eina_list_count(s->stations);
-    printf("Valor: %lf\n", s->value);
-    printf("Total: %d", size);
+    printf("Valor: %lf\n"
+           "Total: %d",
+            s->value, size);
 
     EINA_LIST_FOREACH(s->stations, node, station)
         printf("%s\n", station->name);
