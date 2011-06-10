@@ -43,7 +43,7 @@ _station_init(Station *s, const char *line)
     }
 
     s->points = point_list_init(&line[i]);
-    s->score = 0;
+    s->score = s->value/eina_list_count(s->points);
 }
 
 static void
@@ -52,6 +52,21 @@ _station_shutdown(Station *s)
     point_list_shutdown(s->points);
     free(s->name);
     free(s);
+}
+
+static int
+_score_cmp(const void *d1, const void *d2)
+{
+    const Station *s1 = d1;
+    const Station *s2 = d2;
+    double epsilon = 0.000000000000001;
+
+    if (s1->score - s2->score > epsilon)
+        return 1;
+    else if (s1->score - s2->score < epsilon)
+        return -1;
+
+    return 0;
 }
 
 
@@ -100,6 +115,9 @@ Eina_List *
 station_available_list_init(Eina_List *stations)
 {
     Eina_List *available_stations = eina_list_clone(stations);
+    available_stations = eina_list_sort(available_stations,
+                                        eina_list_count(available_stations),
+                                        _score_cmp);
     return available_stations;
 }
 
