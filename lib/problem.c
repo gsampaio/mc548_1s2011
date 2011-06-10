@@ -2,10 +2,18 @@
 #include "problem.h"
 #include "station.h"
 
+/*****************
+ * API FUNCTIONS *
+ *****************/
 void
 problem_init(Problem *p, const char *inst_name)
 {
     FILE *inst = fopen(inst_name, "r");
+    if (!inst)
+    {
+        printf("filename: \"%s\" is invalid!\n", inst_name);
+        exit(-1);
+    }
 
     fscanf(inst, "%*s %d %*s %d", &p->n, &p->m);
 
