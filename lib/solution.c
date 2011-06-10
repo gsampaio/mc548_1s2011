@@ -9,6 +9,36 @@ solution_compare(Solution *s1, Solution *s2)
     return s2;
 }
 
+Station *
+solution_worst_station_get(Solution *solution)
+{
+    Eina_List *l, *l_next;
+    Station *worst, *d;
+
+    EINA_LIST_FOREACH_SAFE(solution->stations, l, l_next, d)
+    {
+        if (l_next)
+        {
+            Station *d_next;
+            if (d->score > d_next->score)
+                worst = d;
+            else if (d->score < d_next->score)
+                worst = d_next;
+            else
+            {
+                if (eina_list_count(d->points) >= eina_list_count(d_next->points))
+                    worst = d_next;
+                else
+                    worst = d;
+            }
+        }
+        else
+            if (worst->score < d->score)
+                worst = d;
+    }
+    return worst;
+}
+
 void
 solution_update(Solution *solution, Eina_List *points, Eina_List *stations, Station *station)
 {
