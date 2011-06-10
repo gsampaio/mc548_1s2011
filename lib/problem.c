@@ -2,6 +2,9 @@
 #include "problem.h"
 #include "station.h"
 
+/*****************
+ * API FUNCTIONS *
+ *****************/
 void
 problem_init(Problem *p, const char *inst_name)
 {

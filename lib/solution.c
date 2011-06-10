@@ -1,6 +1,9 @@
 #include <stdio.h> /*FIXME: remover ao remover o printf */
 #include "solution.h"
 
+/*****************
+ * API FUNCTIONS *
+ *****************/
 Solution *
 solution_compare(Solution *s1, Solution *s2)
 {
