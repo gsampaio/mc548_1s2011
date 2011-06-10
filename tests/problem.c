@@ -3,7 +3,7 @@
 #include <Eina.h>
 #include "problem.h"
 
-int main(int argc, char* argv[]) {
+int main(__attribute__((unused)) int argc, char* argv[]) {
     Problem p;
     eina_init();
 
