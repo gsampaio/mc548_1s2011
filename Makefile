@@ -5,8 +5,24 @@ LIB_FILES = lib/point.c lib/problem.c lib/solution.c lib/station.c
 INCLUDE_DIR = include
 BIN = saveWorld
 
+TEST_PROBLEM = tests/problem.c
+BIN_TEST_PROBLEM = tests/problemTest
+
+TEST_STATION = tests/station.c
+BIN_TEST_STATION = tests/stationTest
+
+TEST_POINT = tests/points.c
+BIN_TEST_POINT = tests/pointTest
+BIN_TEST_SOLUTION = solutionTest
+
 save_world:
 	${CC} ${SRC_FILES} ${LIB_FILES} -o ${BIN} -I${INCLUDE_DIR} ${OPT}
+
+test:
+	${CC} ${TEST_PROBLEM} ${LIB_FILES} -o ${BIN_TEST_PROBLEM} -I${INCLUDE_DIR} ${OPT}
+	${CC} ${TEST_STATION} ${LIB_FILES} -o ${BIN_TEST_STATION} -I${INCLUDE_DIR} ${OPT}
+	${CC} ${TEST_POINT} ${LIB_FILES} -o ${BIN_TEST_STATION} -I${INCLUDE_DIR} ${OPT}
+
 
 clean:
 	rm -f src/*~ ${BIN}
