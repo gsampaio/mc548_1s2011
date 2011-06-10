@@ -26,7 +26,8 @@ solution_worst_station_get(Solution *solution)
                 worst = d_next;
             else
             {
-                if (eina_list_count(d->points) >= eina_list_count(d_next->points))
+                if (eina_list_count(d->points) >=
+                        eina_list_count(d_next->points))
                     worst = d_next;
                 else
                     worst = d;
