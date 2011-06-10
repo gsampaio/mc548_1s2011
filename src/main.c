@@ -1,9 +1,31 @@
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "problem.h"
 #include "solution.h"
 #include "station.h"
 
+/***************
+ * GLOBAL VARS *
+ ***************/
+Problem p;
+
+
+/*******************************
+ * INTERNAL FUNCTIONS' PRAGMAS *
+ *******************************/
+static void _usage(void);
+static void _verify_problem(Problem *p);
+static void _print_solution(Solution *s);
+static void _init(const char *file);
+static void _shutdown(void);
+static void _alarm_handler (__attribute__((unused)) int sig);
+
+
+/**************************************
+ * INTERNAL FUNCTIONS' IMPLEMENTATION *
+ **************************************/
 static void
 _usage(void)
 {
@@ -47,30 +69,46 @@ _print_solution(Solution *s) {
         printf("%s\n", station->name);
 }
 
+static void
+_init(const char *file)
+{
+    if (!eina_init())
+        exit(-1);
+
+    problem_init(&p, file);
+    signal(SIGALRM, _alarm_handler);
+    alarm(56);
+}
+
+static void
+_shutdown()
+{
+    problem_shutdown(&p);
+    eina_shutdown();
+    exit(0);
+}
+
+static void
+_alarm_handler(__attribute__((unused)) int sig)
+{
+    _shutdown();
+}
+
+
+/********
+ * MAIN *
+ ********/
 int main(int argc, char *argv[])
 {
-    unsigned char r = 0;
-    Problem p;
-
     if (argc != 2)
     {
         _usage();
-        r = -1;
-        goto _err;
+        return -1;
     }
 
-    if (!eina_init())
-    {
-        r = -2;
-        goto _err;
-    }
+    _init(argv[1]);
+//    _solve();
+    _shutdown();
 
-    problem_init(&p, argv[1]);
-
-    problem_shutdown(&p);
-
-    eina_shutdown();
-
-_err:
-    return r;
+    return 0;
 }
