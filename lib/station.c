@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "point.h"
 #include "station.h"
 
@@ -125,7 +126,6 @@ Station *
 station_random_get(Eina_List *stations)
 {
     Station *s;
-    srand(time(NULL));
 
     int r = rand() % eina_list_count(stations);
     s = eina_list_nth(stations, r);

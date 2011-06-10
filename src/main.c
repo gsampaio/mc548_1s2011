@@ -1,6 +1,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 #include "problem.h"
 #include "solution.h"
@@ -75,6 +76,7 @@ _init(const char *file)
     if (!eina_init())
         exit(-1);
 
+    srand(time(NULL));
     problem_init(&p, file);
     signal(SIGALRM, _alarm_handler);
     alarm(56);
