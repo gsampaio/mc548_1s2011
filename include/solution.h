@@ -13,6 +13,6 @@ struct _Solution {
 
 Solution *solution_init(int points);
 Solution *solution_compare(Solution *s1, Solution *s2);
-void solution_update(Solution *solution, Eina_List *points, Eina_List *stations, Station *station);
+void solution_update(Solution *solution, Station *old, Station *new);
 
 #endif /* SOLUTION_H__ */
