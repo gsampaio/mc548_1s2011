@@ -8,8 +8,10 @@ typedef struct _Solution Solution;
 struct _Solution {
     double value;
     Eina_List *stations;
+    Eina_List *points_to_cover;
 };
 
+Solution *solution_init(int points);
 Solution *solution_compare(Solution *s1, Solution *s2);
 void solution_update(Solution *solution, Eina_List *points, Eina_List *stations, Station *station);
 

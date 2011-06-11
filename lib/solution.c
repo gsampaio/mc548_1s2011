@@ -1,9 +1,21 @@
 #include <stdio.h> /*FIXME: remover ao remover o printf */
+#include "point.h"
 #include "solution.h"
 
 /*****************
  * API FUNCTIONS *
  *****************/
+Solution *
+solution_init(int points)
+{
+    Solution *s = malloc(sizeof(Solution));
+    s->value = 0;
+    s->stations = NULL;
+    s->points_to_cover = point_available_list_init(points);
+
+    return s;
+}
+
 Solution *
 solution_compare(Solution *s1, Solution *s2)
 {

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "problem.h"
 #include "station.h"
+#include "solution.h"
 
 /*****************
  * API FUNCTIONS *
@@ -18,6 +19,7 @@ problem_init(Problem *p, const char *inst_name)
     fscanf(inst, "%*s %d %*s %d", &p->n, &p->m);
 
     p->stations = station_list_init(p->m, inst);
+    p->solution = solution_init(p->n);
 
     fclose(inst);
 }
