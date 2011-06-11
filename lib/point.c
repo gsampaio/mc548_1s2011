@@ -57,12 +57,12 @@ point_list_shutdown(Eina_List *points)
 }
 
 Eina_List *
-point_available_list_init(int size)
+point_available_list_init(int points)
 {
     Eina_List *available_points = NULL;
     int i;
 
-    for(i = 1; i <= size; i++)
+    for(i = 1; i <= points; i++)
     {
         int *d = malloc(sizeof(int));
         *d = i;
