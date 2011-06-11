@@ -57,7 +57,7 @@ point_list_shutdown(Eina_List *points)
 }
 
 Eina_List *
-point_available_list_init(int size)
+point_available_list_init(int points)
 {
     Eina_List *available_points = NULL;
     int i;
