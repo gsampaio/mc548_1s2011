@@ -71,3 +71,10 @@ solution_update(Solution *solution, Station *old, Station *new)
     solution->stations = eina_list_append(solution->stations, new);
     solution->value += new->value;
 }
+
+void
+solution_station_insert(Solution *solution, Station *station)
+{
+    solution->value += station->value;
+    solution->stations = eina_list_append(solution->stations, station);
+}
