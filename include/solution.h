@@ -15,7 +15,7 @@ Solution *solution_init(int points);
 void solution_shutdown(Solution *solution);
 Solution *solution_compare(Solution *s1, Solution *s2);
 void solution_update(Solution *solution, Station *old, Station *new);
-Station *solution_worst_station_get(Solution *solution)
-void solution_state_insert(Solution *solution, Station *station);
+Station *solution_worst_station_get(Solution *solution);
+void solution_station_insert(Solution *solution, Station *station);
 
 #endif /* SOLUTION_H__ */
