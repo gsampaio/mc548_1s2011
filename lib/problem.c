@@ -28,4 +28,7 @@ void
 problem_shutdown(Problem *p)
 {
     station_list_shutdown(p->stations);
+    free(p->stations);
+    solution_shutdown(p->solution);
+    free(p->solution);
 }
