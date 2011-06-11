@@ -16,6 +16,13 @@ solution_init(int points)
     return s;
 }
 
+void
+solution_shutdown(Solution *s)
+{
+    station_list_shutdown(s->stations);
+    point_list_shutdown(s->points_to_cover);
+}
+
 Solution *
 solution_compare(Solution *s1, Solution *s2)
 {
