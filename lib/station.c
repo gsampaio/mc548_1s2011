@@ -100,16 +100,10 @@ station_list_init(int station_list_len, FILE *inst)
 void
 station_list_shutdown(Eina_List *stations)
 {
-    int *d;
-    Eina_List *l, *l_next;
+    Station *s;
 
-    EINA_LIST_FOREACH_SAFE(stations, l, l_next, d)
-    {
-        Station *s = (Station *)d;
+    EINA_LIST_FREE(stations, s)
         _station_shutdown(s);
-        stations = eina_list_remove(stations, l);
-    }
-    eina_list_free(stations);
 }
 
 Eina_List *

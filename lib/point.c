@@ -46,14 +46,10 @@ point_list_init_from_file(const char *line)
 void
 point_list_shutdown(Eina_List *points)
 {
-    Eina_List *l, *l_next;
     int *d;
-    EINA_LIST_FOREACH_SAFE(points, l, l_next, d)
-    {
-        points = eina_list_remove(points, l);
+
+    EINA_LIST_FREE(points, d)
         free(d);
-    }
-    eina_list_free(points);
 }
 
 Eina_List *
