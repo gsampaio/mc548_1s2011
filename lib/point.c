@@ -19,7 +19,7 @@ _int_cmp(const void *a, const void *b)
  * API FUNCTIONS *
  *****************/
 Eina_List *
-point_list_init(const char *line)
+point_list_init_from_file(const char *line)
 {
     Eina_List *points;
     unsigned int i = 0, begin = 0;

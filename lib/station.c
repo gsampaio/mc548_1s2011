@@ -43,7 +43,7 @@ _station_init(Station *s, const char *line)
         i++;
     }
 
-    s->points = point_list_init(&line[i]);
+    s->points = point_list_init_from_file(&line[i]);
     s->score = s->value/eina_list_count(s->points);
 }
 
