@@ -2,6 +2,7 @@
 
 cd ../
 echo "Compiling tests"
+make test
 cd -
 ./problemTest ../instances/teste
 ./stationTest ../instances/teste
