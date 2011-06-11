@@ -41,7 +41,7 @@ solution_worst_station_get(Solution *solution)
     {
         if (l_next)
         {
-            Station *d_next;
+            Station *d_next = eina_list_data_get(l_next);
             if (d->score > d_next->score)
                 worst = d;
             else if (d->score < d_next->score)
