@@ -21,7 +21,7 @@ _int_cmp(const void *a, const void *b)
 Eina_List *
 point_list_init_from_file(const char *line)
 {
-    Eina_List *points;
+    Eina_List *points = NULL;
     unsigned int i = 0, begin = 0;
 
     for (; i < strlen(line); i++)
