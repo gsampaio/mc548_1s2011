@@ -19,7 +19,6 @@ solution_init(int points)
 void
 solution_shutdown(Solution *s)
 {
-    station_list_shutdown(s->stations);
     point_list_shutdown(s->points_to_cover);
 }
 
