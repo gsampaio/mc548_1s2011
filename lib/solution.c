@@ -21,20 +21,14 @@ _station_cmp(const void *d1, const void *d2)
  * API FUNCTIONS *
  *****************/
 Solution *
-solution_init(int points)
+solution_init(Eina_List *points)
 {
     Solution *s = malloc(sizeof(Solution));
     s->value = 0;
     s->stations = NULL;
-    s->points_to_cover = point_available_list_init(points);
+    s->points_to_cover = eina_list_clone(points);
 
     return s;
-}
-
-void
-solution_shutdown(Solution *s)
-{
-    point_list_shutdown(s->points_to_cover);
 }
 
 Solution *

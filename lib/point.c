@@ -19,7 +19,7 @@ _int_cmp(const void *a, const void *b)
  * API FUNCTIONS *
  *****************/
 Eina_List *
-point_list_init_from_file(const char *line)
+point_list_init_from_file(const char *line, Eina_List *all_points)
 {
     Eina_List *points = NULL;
     unsigned int i = 0, begin = 0;
@@ -28,13 +28,14 @@ point_list_init_from_file(const char *line)
     {
         if (line[i] == ' ')
         {
-            int *point = malloc(sizeof(int));
+            int point_value, *point;
             int len = i - begin;
             char buffer[len + 1];
             strncpy(buffer, &line[begin], len);
             buffer[len] = '\0';
 
-            *point = atoi(buffer);
+            point_value = atoi(buffer);
+            point = eina_list_nth(all_points, point_value - 1);
             points = eina_list_sorted_insert(points, _int_cmp, point);
 
             begin = i + 1;

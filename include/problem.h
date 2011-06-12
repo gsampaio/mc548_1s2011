@@ -8,6 +8,7 @@ typedef struct _Problem Problem;
 struct _Problem
 {
     int n, m;
+    Eina_List *points;
     Eina_List *stations;
     Solution *solution;
 };

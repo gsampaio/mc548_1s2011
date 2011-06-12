@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "point.h"
 #include "problem.h"
 #include "station.h"
 #include "solution.h"
@@ -18,8 +19,9 @@ problem_init(Problem *p, const char *inst_name)
 
     fscanf(inst, "%*s %d %*s %d", &p->n, &p->m);
 
-    p->stations = station_list_init(p->m, inst);
-    p->solution = solution_init(p->n);
+    p->points = point_available_list_init(p->n);
+    p->stations = station_list_init(p->m, inst, p->points);
+    p->solution = solution_init(p->points);
 
     fclose(inst);
 }
@@ -27,7 +29,7 @@ problem_init(Problem *p, const char *inst_name)
 void
 problem_shutdown(Problem *p)
 {
+    point_list_shutdown(p->points);
     station_list_shutdown(p->stations);
-    solution_shutdown(p->solution);
     free(p->solution);
 }

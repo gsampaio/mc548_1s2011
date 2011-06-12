@@ -14,7 +14,7 @@ struct _Station
     Eina_List *points;
 };
 
-Eina_List *station_list_init(int station_list_len, FILE *inst);
+Eina_List *station_list_init(int station_list_len, FILE *inst, Eina_List *points);
 void station_list_shutdown(Eina_List *stations);
 Eina_List *station_available_list_init(Eina_List *stations);
 Station *station_random_get(Eina_List *stations);

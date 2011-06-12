@@ -9,7 +9,7 @@
  * INTERNAL FUNCTIONS *
  **********************/
 void
-_station_init(Station *s, const char *line)
+_station_init(Station *s, const char *line, Eina_List *points)
 {
     unsigned int i = 0, begin = 0, counter = 0;
 
@@ -43,7 +43,7 @@ _station_init(Station *s, const char *line)
         i++;
     }
 
-    s->points = point_list_init_from_file(&line[i]);
+    s->points = point_list_init_from_file(&line[i], points);
     s->score = s->value/eina_list_count(s->points);
 }
 
@@ -75,7 +75,7 @@ _score_cmp(const void *d1, const void *d2)
  * API FUNCTIONS *
  *****************/
 Eina_List *
-station_list_init(int station_list_len, FILE *inst)
+station_list_init(int station_list_len, FILE *inst, Eina_List *points)
 {
     int i;
     Eina_List *stations = NULL;
@@ -90,7 +90,7 @@ station_list_init(int station_list_len, FILE *inst)
             continue;
 
         s = malloc(sizeof(Station));
-        _station_init(s, buffer);
+        _station_init(s, buffer, points);
 
         stations = eina_list_append(stations, s);
     }

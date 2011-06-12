@@ -11,8 +11,7 @@ struct _Solution {
     Eina_List *points_to_cover;
 };
 
-Solution *solution_init(int points);
-void solution_shutdown(Solution *solution);
+Solution *solution_init(Eina_List *points);
 Solution *solution_compare(Solution *s1, Solution *s2);
 void solution_update(Solution *solution, Station *old, Station *new);
 Station *solution_worst_station_get(Solution *solution);
