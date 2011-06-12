@@ -127,11 +127,9 @@ _create_random_solution(void)
 
     while (covered_points < p.n)
     {
-        printf("p.n - covered_points: %d\n", p.n - covered_points);
         unsigned int points;
-        printf("stations_len: %d\n", eina_list_count(stations));
         Station *st = station_random_get(stations);
-        printf("station name: %s\n", st->name);
+
         points = _update_covered_points(p.solution->points_to_cover, st);
 
         if (points > 0)
