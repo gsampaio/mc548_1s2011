@@ -102,20 +102,18 @@ _update_covered_points(Eina_List *points, Station *s)
 {
     Eina_List *l;
     int *d;
-    unsigned int covered;
+    unsigned int covered = 0;
 
     EINA_LIST_FOREACH(s->points, l, d)
     {
         Eina_List *ll, *ll_next;
-        int *dd;
-        EINA_LIST_FOREACH_SAFE(points,ll, ll_next, dd)
-        {
-            if (*d != *dd)
-                continue;
-
-            points = eina_list_remove(points, dd);
-            covered++;
-        }
+        int *dd = NULL;
+        EINA_LIST_FOREACH_SAFE(points, ll, ll_next, dd)
+            if (*d == *dd)
+            {
+                points = eina_list_remove(points, ll);
+                covered++;
+            }
     }
 
     return covered;
@@ -127,17 +125,20 @@ _create_random_solution(void)
     Eina_List *stations = station_available_list_init(p.stations);
     int covered_points = 0;
 
-    while (covered_points <= p.m)
+    while (covered_points < p.n)
     {
+        printf("p.n - covered_points: %d\n", p.n - covered_points);
         unsigned int points;
+        printf("stations_len: %d\n", eina_list_count(stations));
         Station *st = station_random_get(stations);
+        printf("station name: %s\n", st->name);
         points = _update_covered_points(p.solution->points_to_cover, st);
 
-        if (!points)
-            continue;
-
-        covered_points += points;
-        solution_station_insert(p.solution, st);
+        if (points > 0)
+        {
+            covered_points += points;
+            solution_station_insert(p.solution, st);
+        }
     }
     _print_solution(p.solution);
 }
@@ -155,6 +156,7 @@ int main(int argc, char *argv[])
     }
 
     _init(argv[1]);
+//    _verify_problem(&p);
     _create_random_solution();
     _shutdown();
 
