@@ -56,8 +56,15 @@ solution_worst_station_get(Solution *solution)
             }
         }
         else
-            if (worst->score < d->score)
+        {
+            if (worst)
+            {
+                if (worst->score < d->score)
+                    worst = d;
+            }
+            else
                 worst = d;
+        }
     }
     return worst;
 }
