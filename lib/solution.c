@@ -2,6 +2,21 @@
 #include "point.h"
 #include "solution.h"
 
+/**********************
+ * INTERNAL FUNCTIONS *
+ **********************/
+static int
+_station_cmp(const void *d1, const void *d2)
+{
+    Station *s1 = (Station *)d1;
+    Station *s2 = (Station *)d2;
+
+    if (s1->score < s2->score)
+        return -1;
+    else
+        return 1;
+}
+
 /*****************
  * API FUNCTIONS *
  *****************/
@@ -30,51 +45,14 @@ solution_compare(Solution *s1, Solution *s2)
     return s2;
 }
 
-Station *
-solution_worst_station_get(Solution *solution)
-{
-    Eina_List *l, *l_next;
-    Station *worst, *d;
-
-    EINA_LIST_FOREACH_SAFE(solution->stations, l, l_next, d)
-    {
-        if (l_next)
-        {
-            Station *d_next = eina_list_data_get(l_next);
-            if (d->score > d_next->score)
-                worst = d;
-            else if (d->score < d_next->score)
-                worst = d_next;
-            else
-            {
-                if (eina_list_count(d->points) >=
-                        eina_list_count(d_next->points))
-                    worst = d_next;
-                else
-                    worst = d;
-            }
-        }
-        else
-        {
-            if (worst)
-            {
-                if (worst->score < d->score)
-                    worst = d;
-            }
-            else
-                worst = d;
-        }
-    }
-    return worst;
-}
-
 void
 solution_update(Solution *solution, Station *old, Station *new)
 {
     solution->stations = eina_list_remove(solution->stations, old);
     solution->value -= old->value;
 
-    solution->stations = eina_list_append(solution->stations, new);
+    solution->stations =
+        eina_list_sorted_insert(solution->stations, _station_cmp, new);
     solution->value += new->value;
 }
 
@@ -82,5 +60,6 @@ void
 solution_station_insert(Solution *solution, Station *station)
 {
     solution->value += station->value;
-    solution->stations = eina_list_append(solution->stations, station);
+    solution->stations =
+        eina_list_sorted_insert(solution->stations, _station_cmp, station);
 }
