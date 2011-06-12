@@ -123,6 +123,7 @@ station_random_get(Eina_List *stations)
 
     int r = rand() % eina_list_count(stations);
     s = eina_list_nth(stations, r);
+    stations = eina_list_remove(stations, s);
 
     return s;
 }
