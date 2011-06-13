@@ -99,7 +99,17 @@ _alarm_handler(__attribute__((unused)) int sig)
 {
     _shutdown();
 }
-
+int
+eina_list_data_find_integer(Eina_List* list, int*value) {
+    Eina_List* node;
+    int*data;
+    EINA_LIST_FOREACH(list, node, data) {
+        if(*data == *value) {
+            return 1;
+        }
+    }
+    return 0;
+}
 static unsigned int
 _remove_covered_points(Eina_List *points, Station *s)
 {
@@ -109,7 +119,7 @@ _remove_covered_points(Eina_List *points, Station *s)
 
     EINA_LIST_FOREACH(s->points, l, d)
     {
-        if (eina_list_data_find(points, d))
+        if (eina_list_data_find_integer(points, d) > 0)
         {
             s->points = eina_list_remove(s->points, l);
             covered++;
