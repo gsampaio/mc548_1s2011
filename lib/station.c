@@ -50,7 +50,6 @@ _station_init(Station *s, const char *line, Eina_List *points)
 static void
 _station_shutdown(Station *s)
 {
-    point_list_shutdown(s->points);
     free(s->name);
     free(s);
 }
