@@ -1,8 +1,10 @@
+#include <math.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include "point.h"
 #include "problem.h"
 #include "solution.h"
 #include "station.h"
@@ -86,6 +88,7 @@ _init(const char *file)
 static void
 _shutdown()
 {
+    _print_solution(p.solution);
     problem_shutdown(&p);
     eina_shutdown();
     exit(0);
@@ -98,7 +101,7 @@ _alarm_handler(__attribute__((unused)) int sig)
 }
 
 static unsigned int
-_update_covered_points(Eina_List *points, Station *s)
+_remove_covered_points(Eina_List *points, Station *s)
 {
     Eina_List *l;
     int *d;
@@ -106,41 +109,144 @@ _update_covered_points(Eina_List *points, Station *s)
 
     EINA_LIST_FOREACH(s->points, l, d)
     {
-        Eina_List *ll, *ll_next;
-        int *dd = NULL;
-        EINA_LIST_FOREACH_SAFE(points, ll, ll_next, dd)
-            if (*d == *dd)
-            {
-                points = eina_list_remove(points, ll);
-                covered++;
-            }
+        if (eina_list_data_find(points, d))
+        {
+            s->points = eina_list_remove(s->points, l);
+            covered++;
+        }
     }
 
     return covered;
 }
 
-static void
-_create_random_solution(void)
+static unsigned int
+_insert_covered_points(Eina_List *points, Eina_List *sol_s, Station *s)
 {
-    Eina_List *stations = station_available_list_init(p.stations);
+    Eina_List *l;
+    int *d, inserted = 0;
+
+    EINA_LIST_FOREACH(s->points, l, d)
+    {
+        Eina_Bool insert = EINA_TRUE;
+        Eina_List *ll;
+        Station *dd;
+        EINA_LIST_FOREACH(sol_s, ll, dd)
+        {
+            if (s == dd)
+                continue;
+
+            if (eina_list_data_find(dd->points, d))
+            {
+                insert = EINA_FALSE;
+                break;
+            }
+        }
+
+        if (!insert)
+            continue;
+
+        points = eina_list_sorted_insert(points, point_cmp, d);
+        inserted++;
+    }
+
+    return inserted;
+}
+
+static void
+_create_random_solution(Problem *p, Eina_List *stations)
+{
     int covered_points = 0;
 
-    while (covered_points < p.n)
+    while (covered_points < p->n)
     {
         unsigned int points;
         Station *st = station_random_get(stations);
 
-        points = _update_covered_points(p.solution->points_to_cover, st);
+        points = _remove_covered_points(p->solution->points_to_cover, st);
 
         if (points > 0)
         {
             covered_points += points;
-            solution_station_insert(p.solution, st);
+            solution_station_insert(p->solution, st);
+            stations = eina_list_remove(stations, st);
         }
     }
-    _print_solution(p.solution);
 }
 
+static Solution *
+_solution_clone(Problem *p, Solution *solution)
+{
+    solution->value = p->solution->value;
+    solution->stations = eina_list_clone(p->solution->stations);
+    solution->points_to_cover = eina_list_clone(p->points);
+
+    return solution;
+}
+
+static void
+_local_search(Problem *p, Eina_List *stations)
+{
+    int counter;
+    Solution solution;
+
+    _solution_clone(p, &solution);
+
+    for (counter = 0; counter < sqrt(p->n); counter++)
+    {
+        int covered_points = 0;
+        Station *s_old, *s_new;
+        int solution_stations_len = eina_list_count(solution.stations);
+
+        s_old = eina_list_nth(solution.stations, solution_stations_len - 1);
+        _insert_covered_points(
+                solution.points_to_cover, solution.stations, s_old);
+        solution_station_remove(&solution, s_old);
+        stations = eina_list_sorted_insert(stations, station_cmp, s_old);
+
+        Eina_List *tested_stations = NULL;
+
+        do
+        {
+            unsigned int points;
+            s_new = eina_list_nth(stations, 0);
+            if (!s_new)
+                printf("fudeu\n");
+            points = _remove_covered_points(solution.points_to_cover, s_new);
+
+            if (points > 0)
+            {
+                covered_points += points;
+                solution_station_insert(&solution, s_new);
+            }
+            else
+                tested_stations = eina_list_append(tested_stations, s_new);
+
+            stations = eina_list_remove(stations, s_new);
+
+        } while (covered_points < p->n);
+
+        {
+            Eina_List *l, *l_next;
+            Station *d;
+            EINA_LIST_FOREACH_SAFE(tested_stations, l, l_next, d)
+            {
+                stations = eina_list_sorted_insert(stations, station_cmp, l);
+                tested_stations = eina_list_remove(tested_stations, l);
+            }
+        }
+
+        p->solution = solution_compare(p->solution, &solution);
+    }
+}
+
+static void
+_solve_problem(void)
+{
+    Eina_List *stations = station_available_list_init(p.stations);
+    //loop
+    _create_random_solution(&p, stations);
+    _local_search(&p, stations);
+}
 
 /********
  * MAIN *
@@ -155,7 +261,7 @@ int main(int argc, char *argv[])
 
     _init(argv[1]);
 //    _verify_problem(&p);
-    _create_random_solution();
+    _solve_problem();
     _shutdown();
 
     return 0;

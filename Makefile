@@ -1,5 +1,5 @@
 CC = gcc
-OPT = -Wall -Wextra -g `pkg-config --libs --cflags eina`
+OPT = -Wall -Wextra -g `pkg-config --libs --cflags eina` -lm
 SRC_FILES = src/main.c
 LIB_FILES = lib/point.c lib/problem.c lib/solution.c lib/station.c
 INCLUDE_DIR = include
