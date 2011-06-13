@@ -2,11 +2,12 @@
 #include <string.h>
 #include "point.h"
 
-/**********************
- * INTERNAL FUNCTIONS *
- **********************/
-static int
-_int_cmp(const void *a, const void *b)
+
+/*****************
+ * API FUNCTIONS *
+ *****************/
+int
+point_cmp(const void *a, const void *b)
 {
     const int *ia = a;
     const int *ib = b;
@@ -14,10 +15,6 @@ _int_cmp(const void *a, const void *b)
     return *ia - *ib;
 }
 
-
-/*****************
- * API FUNCTIONS *
- *****************/
 Eina_List *
 point_list_init_from_file(const char *line, Eina_List *all_points)
 {
@@ -36,7 +33,7 @@ point_list_init_from_file(const char *line, Eina_List *all_points)
 
             point_value = atoi(buffer);
             point = eina_list_nth(all_points, point_value - 1);
-            points = eina_list_sorted_insert(points, _int_cmp, point);
+            points = eina_list_sorted_insert(points, point_cmp, point);
 
             begin = i + 1;
         }

@@ -55,8 +55,12 @@ _station_shutdown(Station *s)
     free(s);
 }
 
-static int
-_score_cmp(const void *d1, const void *d2)
+
+/*****************
+ * API FUNCTIONS *
+ *****************/
+int
+station_cmp(const void *d1, const void *d2)
 {
     const Station *s1 = d1;
     const Station *s2 = d2;
@@ -70,10 +74,6 @@ _score_cmp(const void *d1, const void *d2)
     return 0;
 }
 
-
-/*****************
- * API FUNCTIONS *
- *****************/
 Eina_List *
 station_list_init(int station_list_len, FILE *inst, Eina_List *points)
 {
@@ -112,7 +112,7 @@ station_available_list_init(Eina_List *stations)
     Eina_List *available_stations = eina_list_clone(stations);
     available_stations = eina_list_sort(available_stations,
                                         eina_list_count(available_stations),
-                                        _score_cmp);
+                                        station_cmp);
     return available_stations;
 }
 
