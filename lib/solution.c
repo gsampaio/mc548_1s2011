@@ -40,20 +40,16 @@ solution_compare(Solution *s1, Solution *s2)
 }
 
 void
-solution_update(Solution *solution, Station *old, Station *new)
-{
-    solution->stations = eina_list_remove(solution->stations, old);
-    solution->value -= old->value;
-
-    solution->stations =
-        eina_list_sorted_insert(solution->stations, _station_cmp, new);
-    solution->value += new->value;
-}
-
-void
 solution_station_insert(Solution *solution, Station *station)
 {
     solution->value += station->value;
     solution->stations =
         eina_list_sorted_insert(solution->stations, _station_cmp, station);
+}
+
+void
+solution_station_remove(Solution *solution, Station *station)
+{
+    solution->value -= station->value;
+    solution->stations = eina_list_remove(solution->stations, station);
 }

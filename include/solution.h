@@ -13,8 +13,8 @@ struct _Solution {
 
 Solution *solution_init(Eina_List *points);
 Solution *solution_compare(Solution *s1, Solution *s2);
-void solution_update(Solution *solution, Station *old, Station *new);
 Station *solution_worst_station_get(Solution *solution);
 void solution_station_insert(Solution *solution, Station *station);
+void solution_station_remove(Solution *solution, Station *station);
 
 #endif /* SOLUTION_H__ */
